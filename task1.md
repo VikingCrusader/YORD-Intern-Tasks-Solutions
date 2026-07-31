@@ -108,6 +108,6 @@ Because I'm not very familiar with VR devices, I have a few questions regarding 
 
 I used Clockify to record the time spent on this task.
 
-![Clockify time tracking screenshot](.images/task1.png)
+![Clockify time tracking screenshot](./images/task1.png)
 
 It took 1 hour and 21 minutes.
