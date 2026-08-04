@@ -29,4 +29,4 @@ Since I already have a project I'm proud of, I'm sharing that instead of buildin
 
 ---
 
-_Time spent per task is noted at the end of each document (optional, per the task instructions)._
+_Time spent per task is noted at the end of each document._
