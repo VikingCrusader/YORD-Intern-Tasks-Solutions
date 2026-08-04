@@ -280,6 +280,6 @@ The two do not resemble each other at all — the real street (historic facades,
 
 ---
 ## Time Consuming 
-The outdoor test lasted approximately 5 hours.
+The outdoor test lasted approximately 5 hours.<br />
 QA Report took 2 hour and 24 minutes (Recorded by Clockify)
 ![Clockify time tracking screenshot](./images/task3.png)
