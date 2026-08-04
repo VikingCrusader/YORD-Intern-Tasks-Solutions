@@ -13,11 +13,7 @@ Work on this repo spans **July 30 – August 4**, with the full commit history r
 
 **Time spent:** 1 hour 21 minutes (recorded by Clockify)
  
-<table>
-<tr>
-<td align="center"><img src="./images/task1.png" width="260"><br><em>Clockify time tracking screenshot</em></td>
-</tr>
-</table>
+![Clockify time tracking screenshot](./images/task1.png)
 
 
 ## Task 2 — What Would You Do Next? (Prioritization Exercise)
@@ -26,11 +22,7 @@ Work on this repo spans **July 30 – August 4**, with the full commit history r
 
 **Time spent:** 1 hour 6 minutes 47 seconds (recorded by Clockify)
  
-<table>
-<tr>
-<td align="center"><img src="./images/task2.png" width="260"><br><em>Clockify time tracking screenshot</em></td>
-</tr>
-</table>
+![Clockify time tracking screenshot](./images/task2.png)
 
 ## Task 3 — Future Prague: QA Report
 
@@ -38,11 +30,7 @@ Work on this repo spans **July 30 – August 4**, with the full commit history r
 
 **Time spent:** The outdoor test lasted approximately 5 hours. Writing the QA report took 2 hours 24 minutes (recorded by Clockify).
  
-<table>
-<tr>
-<td align="center"><img src="./images/task3.png" width="260"><br><em>Clockify time tracking screenshot</em></td>
-</tr>
-</table>
+![Clockify time tracking screenshot](./images/task3.png)
 
 ## Task 4 — Personal Project: Prague Stories
 
