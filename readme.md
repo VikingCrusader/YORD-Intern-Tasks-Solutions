@@ -1,4 +1,4 @@
-# YORD Intern Task Solutions
+# YORD Intern Task Solutions by Yiwen Zhang
 
 Solutions for the QA Tester & DEV Intern take-home task at YORD.
 

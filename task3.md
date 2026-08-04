@@ -81,16 +81,18 @@ This is a manual functional QA pass on a mobile WebAR experience. The goal is to
 
 ### Session 2 — Výtoň (Biotech: tap-to-grow AR grass)
 
-- Rotating the phone around placed patches: no unwanted disappearance.
-- No noticeable input latency; i18n looked fine at this landmark.
-- Multiple taps at the same spot stack correctly, no glitching.
-- PWA "Add to Home Screen" — **passed on iOS only**; not verified on Android due to device limitation this session (scope gap, not a fail).
+- Rotating the phone around placed patches: no unwanted disappearance(**pass**).
+- No noticeable input latency; i18n(EN/CZ switcher) looked fine at this landmark(**pass**).
+- Multiple taps at the same spot stack correctly, no glitching(**pass**).
+- PWA "Add to Home Screen" — **passed on iOS only**; not verified on Android due to device limitation this session.
+- Tap once to place a plant, worked well(**pass**).
 - Portrait/landscape switch — smooth, no issues (**T5.4 pass**).
 - 3D model scaling correct (near = big, far = small) (**pass**).
+- Planting a plant, the temperture reduces(**pass**).
 - Validation works: cannot plant in the sky or on existing green/grass areas (**pass**).
-- Walking away and returning to an already-planted spot: the grass is gone → **VY-01**.
+- Walking away for a while and returning to an already-planted spot: the grass is gone → **VY-01**.
 - Fully closing the browser tab and reopening: planted progress not retained → **VY-02**.
-- Covering the camera lens entirely: still able to place grass → **VY-03**.
+- Covering the camera lens entirely without showing ground: still able to place grass → **VY-03**.
 - Some icons occasionally needed multiple taps before responding → **GEN-01** (not yet isolated to one specific icon).
 - Pinch gesture (two fingers together) reduces the on-screen "temperature" stat by 2° without planting anything → **VY-A01** (unclear if intentional shortcut or bug).
 - After planting a certain number of patches, each new one causes an older one to disappear → **VY-A02** (unclear if a deliberate cap/pooling mechanic or a bug).
@@ -100,12 +102,13 @@ This is a manual functional QA pass on a mobile WebAR experience. The goal is to
 
 ### Session 3 — Palackého náměstí (AI: emoji-based personalized ad billboard)
 
-- Billboard can be occluded by real-world trees/utility poles — visually correct (respects real depth) but looks unpolished → **PN-A01**.
-- Switching the app to background (not closing the browser, just switching apps) and returning: the billboard disappears → **PN-01**. This is distinct from VY-02 (which is a full browser close) and arguably more severe, since backgrounding happens far more casually (e.g. taking a call).
 - Rotating the camera 360° while the billboard is active: no issues found (**pass**).
+- No noticeable input latency(**pass**);
 - Tapping elsewhere on screen moves the billboard's position — correct, expected reactive behavior (**pass**).
 - Billboard only appears when pointing at the sky; tapping ground, buildings, or water does not trigger it — validation works as intended (**pass**).
 - Tested 5 different mood emojis: all produced different, correctly varied ad content (**pass**) — though all 5 runs shared the same GEN-02/PN-01 issues above.
+- Billboard can be occluded by real-world trees/utility poles — visually correct (respects real depth) but looks unpolished → **PN-A01**.
+- Switching the app to background (not closing the browser, just switching apps) and returning: the billboard disappears → **PN-01**. This is distinct from VY-02 (which is a full browser close) and arguably more severe, since backgrounding happens far more casually (e.g. taking a call).
 - Confirmed again here: app can be opened and the scenario triggered from anywhere, not just on-site → additional evidence for **GEN-02**.
 
 ### Session 4 — Náměstí Republiky (Aerospace: delivery drone)
@@ -116,6 +119,8 @@ This is a manual functional QA pass on a mobile WebAR experience. The goal is to
 
 ### Session 5 — Na Příkopě (Culture & Creativity: historic photo overlay)
 
+- "Match with histroy" button and showing the historical picture (**pass**).
+- The outline of the historical building is rendered correctly(**pass**).
 - No functional crash-type bugs found here, but UX has real room for improvement:
   - Confirmed again: the camera/filter can be opened and used from anywhere, facing any direction — not gated to being on-site and facing the correct direction → further evidence for **GEN-02**.
   - Feedback is weak: the historic photo is just a flat overlay filter: the user has to manually drag a slider/axis to control how strongly the filter is applied, rather than the app automatically rendering the blend → **NP-A01** (UX suggestion, not a functional bug).
@@ -279,7 +284,22 @@ The two do not resemble each other at all — the real street (historic facades,
 - **Overall:** Core AR rendering (drone, grass, ad billboard, 360° view, historic photo) works and looks solid across all 5 landmarks. The most significant finding is GEN-02 — the complete absence of location/proximity enforcement, reproduced consistently across 4 of the 5 landmarks — which is a question for the team rather than a confirmed bug, since it may be an intentional "preview from anywhere" design choice. Beyond that, most issues found are medium/low severity (state persistence on backgrounding/closing, minor placement-validation gaps, occasional unresponsive taps) rather than experience-breaking.
 
 ---
-## Time Consuming 
+
+## 7. Recommendations (Beyond Bugs)
+ 
+These are UX/product suggestions rather than bugs — things that wouldn't show up as a "fail" in a test case, but that I think would meaningfully improve the experience. A few are informed by working on my own location-based app, Prague Stories, where I ran into similar design questions.
+ 
+- **Add turn-by-turn navigation or a Google Maps link per landmark.** Right now the interactive map shows where the landmarks are, but doesn't help a user actually get there (especially useful given GEN-02 — if proximity checks get added, users will need an easy way to close the distance). A simple "Open in Google Maps" / "Navigate here" button per landmark, similar to what I built into Prague Stories, would remove friction for people less familiar with the city.
+- **Show a live distance/progress indicator per landmark on the map**, rather than only a static marker — e.g. "120m away" or a proximity ring that fills in as the user gets closer. This also gives the app a natural place to explain the AR trigger radius, which currently isn't communicated anywhere.
+- **Persist scenario progress locally** (e.g. via localStorage, or backend if accounts exist), so the grass/billboard/photo-match progress doesn't disappear on backgrounding (PN-01) or closing the browser (VY-02). Even a lightweight "resume where you left off" would remove a real point of user frustration.
+- **Add a visible completion tracker across all 5 landmarks** (e.g. "3/5 visited"), similar to the "unlocked locations" counter I used in Prague Stories. Right now there's no persistent sense of overall progress across the whole experience, only within each individual scenario.
+- **Unify or intentionally differentiate the call-to-action buttons.** "Start AR" / "Start 360° View" / "Start AI" do reflect real differences in experience type, but as-is it reads more like inconsistency than intentional design — a short label + icon convention (e.g. all "Start Experience" with a small icon indicating AR vs. 360° vs. AI) would make the variation feel deliberate rather than accidental.
+- **Make the "preview from anywhere" behavior explicit, if it's intentional** (see GEN-02) — e.g. a small on-screen note like "Previewing remotely — visit in person for the full experience" would turn an ambiguous/confusing behavior into a clearly intentional feature.
+- **Add a loading indicator for AR content specifically**, separate from the initial page load — a couple of the scenarios had a brief pause before the 3D content appeared, and it wasn't always clear whether the app was still working or had stalled.
+
+---
+
+## 8. Time Consuming 
 The outdoor test lasted approximately 5 hours.<br />
 QA Report took 2 hour and 24 minutes (Recorded by Clockify)
 ![Clockify time tracking screenshot](./images/task3.png)
