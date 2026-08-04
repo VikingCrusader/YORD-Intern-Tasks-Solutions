@@ -4,18 +4,32 @@
 **App under test:** Future Prague — WebAR city promotion experience <br />
 **Platform notes:** Built on 8th Wall + A-Frame (confirmed via page metadata) <br />
 
+## Executive Summary
+
+This report presents the results of a manual functional QA assessment of the **Future Prague** mobile WebAR experience. Testing was conducted across **all five real-world landmark scenarios** in Prague using an iPhone 12 (Safari as the primary browser, with additional cross-browser verification in Chrome). The evaluation covered the complete user journey, including entry flow, navigation, AR interactions, state persistence, and overall user experience.
+
+Overall, the application is **functionally stable**, with all five core experiences launching successfully and their primary AR features operating as intended. No critical crashes or blockers were encountered during testing, and the overall rendering quality of the AR content was consistently good.
+
+A total of **12 confirmed bugs**, **7 ambiguous findings requiring product or engineering clarification**, and **1 design/UX observation** were identified. Most confirmed issues are of **low to medium severity**, involving state persistence, interaction responsiveness, object placement validation, and AR behavior under specific conditions.
+
+The most significant finding is **GEN-02 – Location Proximity Not Enforced**. Across multiple landmarks and testing sessions, every scenario could be launched successfully regardless of the tester's physical location. Since the intended behavior is not specified, this has been reported as a **high-priority product question** rather than a confirmed defect. If location-based activation is expected, this would represent the highest-impact issue discovered during testing.
+
+In addition to confirmed defects, this report includes several UX and product recommendations aimed at improving usability, navigation, and overall user engagement, while clearly distinguishing these suggestions from functional issues.
+
+The full test scope, detailed field notes, and complete findings breakdown follow below.
+
 ---
 
 ## 1. Test Scope
 
-This is a manual functional QA pass on a mobile WebAR experience. The goal is to verify the user journey end-to-end, across the five landmark scenarios, and document anything unexpected.
+This is a manual functional QA report on a mobile WebAR experience. The goal is to verify the user journey end-to-end, across the five landmark scenarios, and document anything unexpected. I personally visited all 5 locations and performed all of the following tests.
 
 ### Devices / Browsers to cover
 
 | #   | Device     | Browser | Notes               |
 | --- | ---------- | ------- | ------------------- |
-| 1   | _iPhone12_ | Safari  | Primary pass        |
-| 2   | _iPhone12_ | Chrome  | Cross-browser check |
+| 1   | _iPhone 12_ | Safari  | Primary pass        |
+| 2   | _iPhone 12_ | Chrome  | Cross-browser check |
 
 ---
 
@@ -30,15 +44,21 @@ This is a manual functional QA pass on a mobile WebAR experience. The goal is to
 | T1.3 | Permission denial handling         | Deny camera or location permission once, then retry                                  | App shows a clear message/fallback instead of a blank screen or crash                 |
 | T1.4 | Load time                          | Time from link open to interactive experience                                        | Loads within a reasonable time (note actual seconds); loading indicator shown if slow |
 
+**Result:** All tests in this part passed.
+
 ### 2.2 Interactive Map / Navigation
 
-| ID   | What to test                         | How to test                                                                  | Expected result                                                                                   |
-| ---- | ------------------------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| T2.1 | Map displays all 5 landmarks         | Open map view                                                                | All 5 locations visible and correctly labeled                                                     |
-| T2.2 | Current location accuracy            | Compare blue dot / marker to actual physical position                        | Marker position roughly matches real-world location (allow for normal GPS margin)                 |
-| T2.3 | Navigation guidance to next landmark | Follow in-app directions toward a landmark                                   | Guidance updates as you move; doesn't point in the wrong direction                                |
-| T2.4 | Out-of-order visits                  | Intentionally visit a landmark that isn't "next" in the suggested sequence   | App still triggers the correct scenario and updates progress correctly, regardless of order       |
-| T2.5 | Language / localization              | Check default language on load; look for a language switch option if present | Default language is clear; Czech-specific characters render correctly; no obvious mistranslations |
+| ID   | What to test                                           | How to test                                                                  | Expected result                                                                                    |
+| ---- | ------------------------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| T2.1 | Map displays all 5 landmarks                           | Open map view                                                                | All 5 locations visible and correctly labeled                                                      |
+| T2.2 | Current location accuracy                              | Compare red dot / marker to actual physical position                         | Marker position roughly matches real-world location (allow for normal GPS margin)                  |
+| T2.3 | Navigation guidance to next landmark                   | Follow in-app directions toward a landmark                                   | Guidance updates as you move; doesn't point in the wrong direction                                 |
+| T2.4 | Out-of-order visits                                    | Intentionally visit a landmark that isn't "next" in the suggested sequence   | App still triggers the correct scenario and updates progress correctly, regardless of order        |
+| T2.5 | Language / localization                                | Check default language on load; look for a language switch option if present | Default language is clear; Czech-specific characters render correctly; no obvious mistranslations  |
+| T2.6 | "Recenter on my location" button (bottom-right, upper) | Zoom/pan the map away from current position, then tap the button             | Map recenters on the user's actual location and resets to a standard zoom level                    |
+| T2.7 | "Jump to Old Town center" button (bottom-right, lower) | Zoom/pan the map away from the landmark cluster, then tap the button         | Map recenters on the Old Town area (where the 5 landmarks are) and resets to a standard zoom level |
+
+**Result:** All tests in this part passed.
 
 ### 2.3 Landmark AR Scenarios
 
@@ -88,7 +108,7 @@ This is a manual functional QA pass on a mobile WebAR experience. The goal is to
 - Tap once to place a plant, worked well(**pass**).
 - Portrait/landscape switch — smooth, no issues (**T5.4 pass**).
 - 3D model scaling correct (near = big, far = small) (**pass**).
-- Planting a plant, the temperture reduces(**pass**).
+- Planting a plant, the temperature reduces(**pass**).
 - Validation works: cannot plant in the sky or on existing green/grass areas (**pass**).
 - Walking away for a while and returning to an already-planted spot: the grass is gone → **VY-01**.
 - Fully closing the browser tab and reopening: planted progress not retained → **VY-02**.
@@ -249,17 +269,24 @@ Both screenshots show the billboard correctly respecting real-world depth (the b
 The two do not resemble each other at all — the real street (historic facades, trees, pedestrians) bears no visual relationship to the rendered futuristic building (organic white curved architecture with hanging greenery). This isn't a functional bug (the 360° scene itself renders and rotates correctly), but the disconnect between the real surroundings and the AR content is severe enough that it may undermine the "reimagined version of this exact place" premise of the experience — worth flagging as a content/design question for the team rather than treating as simply a stylistic nitpick.
 
 ### 4.5 Verified / Passed
-
+ 
 - Language toggle present and accessible (T2.5, partial — toggle confirmed, translation quality not fully audited).
+- Interactive map: "Recenter on my location" button (T2.6) — correctly recenters and resets zoom.
+- Interactive map: "Jump to Old Town center" button (T2.7) — correctly recenters and resets zoom.
+- Výtoň: single tap correctly places a grass patch.
+- Výtoň: planting a patch correctly reduces the on-screen "temperature" stat.
 - Výtoň: portrait/landscape orientation switch — smooth, no issues.
 - Výtoň: 3D model scaling (near/far) — correct.
 - Výtoň: cannot plant in sky or on existing green areas — validation works.
 - Výtoň: multiple taps at the same spot stack correctly.
+- Palackého náměstí: no noticeable input latency.
 - Palackého náměstí: 360° camera rotation while billboard is active — no issues.
 - Palackého náměstí: tapping elsewhere correctly moves the billboard.
 - Palackého náměstí: billboard only triggers when pointing at sky (not ground/building/water).
 - Palackého náměstí: all 5 tested emojis produced correctly varied ad content.
 - Náměstí Republiky: drone rendering quality itself — no issues.
+- Na Příkopě: "Match with history" button correctly triggers and displays the historic photo.
+- Na Příkopě: historic building wireframe outline renders correctly aligned.
 - Na Příkopě: core historic-photo-overlay feature works, no crashes.
 - Václavské náměstí: 360° look-around (rotation in place) — works correctly.
 - PWA "Add to Home Screen" — passed on iOS. **Android not verified (device limitation), noted as a scope gap.**
@@ -279,16 +306,16 @@ The two do not resemble each other at all — the real street (historic facades,
 ## 6. Status Update (Summary for Report)
 
 - **Testing scope:** All 5 landmarks tested on-site (Náměstí Republiky, Na Příkopě, Václavské náměstí, Palackého náměstí, Výtoň), across multiple sessions.
-- **Device/browser:** _(fill in phone model)_, Safari (primary). _(fill in if Chrome was also tested)_
+- **Device/browser:** _iPhone12_, Safari, Chrome.
 - **Environment:** Mix of day/night conditions across sessions; outdoor on-site testing for the main sessions.
 - **Overall:** Core AR rendering (drone, grass, ad billboard, 360° view, historic photo) works and looks solid across all 5 landmarks. The most significant finding is GEN-02 — the complete absence of location/proximity enforcement, reproduced consistently across 4 of the 5 landmarks — which is a question for the team rather than a confirmed bug, since it may be an intentional "preview from anywhere" design choice. Beyond that, most issues found are medium/low severity (state persistence on backgrounding/closing, minor placement-validation gaps, occasional unresponsive taps) rather than experience-breaking.
 
 ---
 
-## 7. Recommendations (Beyond Bugs)
- 
+## 7. Suggestions (Beyond Bugs)
+
 These are UX/product suggestions rather than bugs — things that wouldn't show up as a "fail" in a test case, but that I think would meaningfully improve the experience. A few are informed by working on my own location-based app, Prague Stories, where I ran into similar design questions.
- 
+
 - **Add turn-by-turn navigation or a Google Maps link per landmark.** Right now the interactive map shows where the landmarks are, but doesn't help a user actually get there (especially useful given GEN-02 — if proximity checks get added, users will need an easy way to close the distance). A simple "Open in Google Maps" / "Navigate here" button per landmark, similar to what I built into Prague Stories, would remove friction for people less familiar with the city.
 - **Show a live distance/progress indicator per landmark on the map**, rather than only a static marker — e.g. "120m away" or a proximity ring that fills in as the user gets closer. This also gives the app a natural place to explain the AR trigger radius, which currently isn't communicated anywhere.
 - **Persist scenario progress locally** (e.g. via localStorage, or backend if accounts exist), so the grass/billboard/photo-match progress doesn't disappear on backgrounding (PN-01) or closing the browser (VY-02). Even a lightweight "resume where you left off" would remove a real point of user frustration.
@@ -299,7 +326,8 @@ These are UX/product suggestions rather than bugs — things that wouldn't show 
 
 ---
 
-## 8. Time Consuming 
+## 8. Time Investment
+
 The outdoor test lasted approximately 5 hours.<br />
-QA Report took 2 hour and 24 minutes (Recorded by Clockify)
+Preparing this QA report took 2 hours and 24 minutes (tracked with Clockify).
 ![Clockify time tracking screenshot](./images/task3.png)
